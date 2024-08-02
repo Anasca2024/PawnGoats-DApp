@@ -1,0 +1,25 @@
+.admin-content{
+    border: 1px dashed hotpink;
+    display: grid;
+grid-template-columns: repeat(4, 1fr);
+grid-template-rows: repeat(2, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.admin-content > * {
+    border: 3px solid #d4af37;
+    border-radius: 10px;
+    margin: 0.5em;
+
+    text-align: center;
+}
+
+
+
+// Grid layout
+#pending { grid-area: 1 / 1 / 2 / 3; }
+
+#active { grid-area: 1 / 3 / 2 / 5; }
+#completed { grid-area: 2 / 1 / 3 / 3; }
+#shipping { grid-area: 2 / 3 / 3 / 5;}

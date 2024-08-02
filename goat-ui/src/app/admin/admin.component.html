@@ -1,0 +1,88 @@
+<div class="admin-content">
+
+    <div id="pending">
+        <h2>Pending Orders</h2>
+        <p-scroller [items]="pendingOrders" [itemSize]="150" scrollHeight="300px" styleClass="border-1 surface-border" [style]="{'width': '100%', 'height': '300px'}">
+            <ng-template pTemplate="item" let-order>
+                <app-pending-order [order]="order"></app-pending-order>
+            </ng-template>
+        </p-scroller>
+    </div>
+
+    <div id="active">
+        <h2>Active</h2>
+        <p-scroller [items]="activeOrders" [itemSize]="150" scrollHeight="300px" styleClass="border-1 surface-border" [style]="{'width': '100%', 'height': '300px'}">
+            <ng-template pTemplate="item" let-order>
+                <app-active-order-component [order]="order"></app-active-order-component>
+            </ng-template>
+        </p-scroller>
+
+    </div>
+
+    <div id="completed">
+        <h2>Completed</h2>
+        <p-scroller [items]="completedOrders" [itemSize]="150" scrollHeight="300px" styleClass="border-1 surface-border" [style]="{'width': '100%', 'height': '300px'}">
+            <ng-template pTemplate="item" let-order>
+                <app-completed-order [order]="order"></app-completed-order>
+            </ng-template>
+        </p-scroller>
+    </div> 
+
+    <div id="shipping">
+        <h2>Shipping</h2>
+
+        <p-tabView scrollable="true">
+
+            <p-tabPanel header="Confirm Item Received">
+                <form (submit)="ownerConfirmShipping()">
+                    <h2>Confirm Item Received</h2>
+
+                    <p>
+                        After the user pays the shipping stake, they ship their item. If we receive the item, we will confirm it here.
+                    </p>
+
+                    <h3>Order ID</h3>
+                    <input type="text" placeholder="Enter Order ID" pInputText [(ngModel)]="orderID" name="orderID" />
+
+                    <!-- //insert radio button here. two options (received, not received) -->
+                    <h3>Item Received?</h3>
+                    <input type="radio" name="itemReceived" value="yes" [(ngModel)]="itemReceived"> Yes
+                    <input type="radio" name="itemReceived" value="no" [(ngModel)]="itemReceived"> No
+
+                    <br>
+                    <p-button label="Submit" [style]="{'margin-top': '1em'}" type="submit"></p-button>
+
+                </form>
+
+                <h3 *ngIf="ownerConfirmAPIStatus !== ''">Status: {{ownerConfirmAPIStatus}}</h3>
+            </p-tabPanel>
+
+            <p-tabPanel header="Submit Return Tracking Number">
+                <form (submit)="assignOwnerShippingHash(); $event.preventDefault()">
+                    <h2>Submit Tracking Number</h2>
+            
+                    <p>
+                        After the user has repaid the loan, the pawn shop (you) must ship the item back to the user and provide a tracking number. 
+                    </p>
+            
+                    <h3>Order ID</h3>
+                    <input type="text" placeholder="Enter Order ID" pInputText [(ngModel)]="orderID" name="orderID" />
+            
+                    <h3>Tracking Number</h3>
+                    <input type="text" placeholder="Enter Tracking Number" pInputText [(ngModel)]="trackingNumber" name="trackingNumber" />
+            
+                    <br>
+            
+                    <p-button label="Submit" [style]="{'margin-top': '1em'}" type="submit"></p-button>
+                    
+                </form>
+
+                <h3 *ngIf="assignOwnerShippingHashAPIStatus !== ''">{{assignOwnerShippingHashAPIStatus}}</h3>
+            </p-tabPanel>
+            
+            
+        </p-tabView>
+    </div> 
+
+
+</div>

@@ -1,0 +1,16 @@
+.completed-order-content{
+    display: flex;
+
+    background-color: #1c294b; 
+    border-radius: 10px;
+    margin: 0.25em;
+    margin-bottom: 0.5em;
+    padding-left: 0.5em;
+
+    // make it so that the children are evenly spaced horizontally
+    justify-content: space-between;
+}
+
+button{
+    margin: 0.5em;
+}

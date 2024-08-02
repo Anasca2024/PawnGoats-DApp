@@ -1,0 +1,222 @@
+<div class="home_content">
+
+    <div class="how_it_works">
+        <h1>How it Works</h1>
+
+        <ol>
+            <li>
+                <strong>Pawn Request Submission:</strong> 
+                Users begin by entering a description of the item they wish to pawn, specifying 
+                the desired loan amount, and selecting an interest tier. The user then submits this 
+                pawn request for review.
+            </li>
+            <li>
+                <strong>Order Acceptance and Payment Address:</strong> 
+                If your order is accepted, your order status will be updated to "Accepted". The 
+                updated order status will include a payable address for the shipping stake (the cost of shipping). 
+                Denied requests are discarded and must be resubmitted. 
+            </li>
+            <li>
+                <strong>Loan and Stake Process:</strong> 
+                To recieve your loan, you must pay the shipping stake and submit the tracking number for your item. 
+                Once we recieve the item and confirm its condition, the transaction contract is automatically populated
+                with our stake and the loan is sent to your wallet.
+            </li>
+            <li>
+                <strong>Item Verification and Loan Issuance:</strong> 
+                Upon confirming the receipt and condition of the item, the user receives the loan amount along with the 
+                return of the shipping stake plus any extra currency submitted by the user as part of the stake. The repayment timer then begins.
+            </li>
+            <li>
+                <strong>Continuous Tracking and Repayment Information:</strong> 
+                Users can check the status of their order and the amount owed at any time by entering their order ID. 
+                The amount owed is valid for 10 minutes, after which it is recalculated, providing up-to-date information 
+                for repayment.
+            </li>
+            <li>
+                <strong>Case 1 - Non-Repayment:</strong> 
+                If the user does not repay the loan in the agreed upon time frame, the double stake is returned to the 
+                pawn shop, and the pawn shop assumes ownership of the item.
+            </li>
+            <li>
+                <strong>Case 2 - Repayment:</strong> 
+                The repayment amount is calculated based on the timing of the blockchain query. Once the user repays 
+                the owed amount, the loaned money is sent back to pawn shop. Any extra currency sent to the contract by
+                the user will also be returned to the user. We only take what is owed to us.
+            </li>
+            <li>
+                <strong>Item Return Process:</strong> 
+                After repayment, the company ships the item back to the user and provides a tracking number. 
+                Challenges are resolved off-chain by the pawn shop. The hash can be used in court to prove the item
+                was shipped and received, if necessary.
+            </li>        
+        </ol>
+
+        <strong>Ship to: 123 Seseame Street</strong>
+
+        <h2>Interest Tiers</h2>
+
+        <div class="all-tiers">
+
+            <div class="interest_tier">
+                <img src="../../assets/plat.png"> <p><strong>Platinum:</strong> 3 week pay period with 35% interest.</p>
+            </div>
+            
+            <div class="interest_tier">
+                <p><strong>Gold Tier:</strong> 2 week pay period with 25% interest.</p> <img src="../../assets/gold.png">
+            </div>
+
+            <div class="interest_tier">
+                <img src="../../assets/silver.png"> <p><strong>Silver Tier:</strong> 1 week pay period with 15% interest.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="pawn_an_item">
+        <h1>Pawn an Item</h1>
+       
+        <p-tabView scrollable="true">
+            <p-tabPanel header="Request to Pawn">
+                <form (ngSubmit)="createOrder($event)">
+                    <h2>Request to Pawn</h2>
+
+                    <p>Please provide the title, description, price you're seeking for your item, and select your interest tier. 
+                        Upon submitting you will be provided an order ID. This order ID is unique to your pawn request and will be used to track the status of your order.
+                    </p>
+            
+                    <h3>Item Title</h3>
+                    <input type="text" placeholder="Enter Item Title" pInputText [(ngModel)]="itemName" name="itemName" />
+            
+                    <h3>Item Description</h3>
+                    <textarea rows="5" cols="30" placeholder="Enter Item Description" pInputTextarea [(ngModel)]="description" name="description"></textarea>
+            
+                    <h3>Desired Price</h3>
+                    <input type="number" placeholder="Enter Desired Price" pInputText [(ngModel)]="price" (ngModelChange)="calculateFinalPayment()" name="price" />
+
+                    <h3>Interest Tier</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton name="interestRate" value="PLATINUM" [(ngModel)]="interestRate" (ngModelChange)="calculateFinalPayment()" inputId="platinum"></p-radioButton>
+                            <label for="platinum" class="ml-2">Platinum</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton name="interestRate" value="GOLD" [(ngModel)]="interestRate" (ngModelChange)="calculateFinalPayment()" inputId="gold"></p-radioButton>
+                            <label for="gold" class="ml-2">Gold</label>
+                          </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton name="interestRate" value="SILVER" [(ngModel)]="interestRate" (ngModelChange)="calculateFinalPayment()" inputId="silver"></p-radioButton>
+                          <label for="silver" class="ml-2">Silver</label>
+                        </div>
+                      </div>
+
+                    <h3>Maximum Final Payment: {{ maxFinalPayment}} ETH</h3>
+                    <br>
+                    <p-button type="submit" label="Submit" [style]="{'margin-top': '1em'}"></p-button>
+                </form>
+
+                <!-- Status message display -->
+                <div *ngIf="apiStatus" [ngClass]="{'success': apiSuccess, 'failure': !apiSuccess}">
+                    <h3>{{ apiStatus }}</h3>
+                </div>
+            </p-tabPanel>
+            
+            <p-tabPanel header="Check Order Status">
+                <form (submit)="getOrderStatus($event)">
+                    <h2>Check Order Status</h2>
+                    <p>
+                        You can check the status of your pawn order at any point in its lifecycle. Using this tab you can:
+                    </p>
+
+                    <ul>
+                        <li>Check if your pawn order has been accepted/denied</li>
+                        <li>Check the wallet address where you send the shipping stake</li>
+                        <li>Check the if your item successfully shipped</li>
+                        <li>Check the current amount owed on your pawn order</li>
+                        <li>Check the status of your item return</li>
+                    </ul>
+
+                    <p>
+                        Enter your order ID below to check the status of your pawn order.
+                    </p>
+
+                    <h3>Order ID</h3>
+                    <input type="text" placeholder="Enter Order ID" pInputText [(ngModel)]="orderID" name="orderID" />
+
+                    <p-button label="Submit" [style]="{'margin-top': '1em'}" type="submit"></p-button>
+
+                    <h3>Order Status</h3>
+
+                    <p *ngIf="orderStatus !== ''">Status: {{orderStatus}}</p>
+                    <p *ngIf="subContractAddress !== ''">Payable Wallet Address: {{subContractAddress}}</p>
+                    <p *ngIf="amountDue !== ''">Amount Due: {{amountDue}} Wei</p>
+                    <!-- stuff to add -->
+                    
+                    <p></p>
+                </form>
+            </p-tabPanel>
+             
+            <p-tabPanel header="Submit Tracking Number">
+                <form (ngSubmit)="submitTrackingNumber()">
+                    <h2>Submit Tracking Number</h2>
+                    <p>
+                        To receive your loan, you must pay the shipping stake and submit the tracking number for your item. After paying the stake, enter your order ID and tracking number below.
+                    </p>
+            
+                    <h3>Order ID</h3>
+                    <input type="text" placeholder="Enter Order ID" pInputText [(ngModel)]="orderID" name="orderID" />
+            
+                    <h3>Tracking Number</h3>
+                    <input type="text" placeholder="Enter Tracking Number" pInputText [(ngModel)]="trackingNumber" name="trackingNumber" />
+            
+                    <br>
+            
+                    <p-button type="submit" label="Submit" [style]="{'margin-top': '1em'}"></p-button>
+                </form>
+
+                <h3>{{apiStatus}}</h3>
+            </p-tabPanel>
+            
+            
+            
+            <p-tabPanel header="Confirm Item Returned">
+                <form (submit)="onConfirmationFormSubmit($event)">
+                    <h2>Confirm Item Returned</h2>
+
+                    <p>
+                        After repayment, the pawn shop ships the item back to the user and provides a tracking number. 
+                        A 2-week timer starts, during which the customer must confirm receipt of the item or raise a 
+                        challenge if the item was not received. Enter your order ID below to confirm/challenge the 
+                        return of your item. A challenge will initiate an off-chain resolution process.
+                    </p>
+
+                    <h3>Order ID</h3>
+                    <input type="text" placeholder="Enter Order ID" pInputText [(ngModel)]="orderID" name="orderID" />
+
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center" class="radios">
+                            <p-radioButton name="returns" value="returned" [(ngModel)]="returnStatus" inputId="returned"></p-radioButton>
+                            <label for="returned" class="ml-2">Item Returned</label>
+                        </div>
+                        
+                        <div class="flex align-items-center" class="radios">
+                            <p-radioButton name="returns" value="challenge" [(ngModel)]="returnStatus" inputId="challenge"></p-radioButton>
+                            <label for="challenge" class="ml-2">Initiate Off-Chain Challenge</label>
+                        </div>
+                    </div>
+                    
+
+                    <br>
+                    <p-button type="submit" label="Submit" [style]="{'margin-top': '1em'}"></p-button>
+
+                </form>
+
+                <h3>{{ confirmationFormStatusMessage }}</h3>
+            </p-tabPanel>
+        </p-tabView>
+        
+    </div>
+
+</div>

@@ -1,0 +1,12 @@
+<!-- Assuming this is within a header component -->
+<header class="header-content">
+    <div class="logo-container">
+        <a class="logo-container" [routerLink]="['/home']">
+            <img src="../../assets/pawn_goat.png" alt="Pawn Goats Logo">
+            <h1>Pawn Goats LLC</h1>
+        </a>
+        
+    </div>
+    <!-- If you are using Angular's p-button component you should bind the click event -->
+    <p-button class="admin-button" label="Admin" severity="secondary" (onClick)="navigateToAdmin()"></p-button>
+</header>
