@@ -1,6 +1,6 @@
 # Installation
 
-1. Clone the repo onto your device: `git clone https://github.com/Blockchain-2235/project-alex_trevor_nick`
+1. Clone the repo onto your device: `git clone https://github.com/Blockchain-2235/PawnGoats-DApp/`
 2. Navigate to the hardhat directory
 3. Install hardhat: `npm install --save-dev hardhat`
    ![Image 1](./Readme_Screenshots/image1.png)
