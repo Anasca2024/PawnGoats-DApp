@@ -214,3 +214,5 @@ Error: network does not support ENS (operation="getResolver", network="unknown",
 2. Sometimes ganache does not properly accept network traffic, saving the workspace and restarting ganache can fix this issue
 
 3. If you deploy a contract successfully but start to get the listed error above when making the first order, restart ganache, deploy a new business contract (step 3 under Deploying DAPP -> Required).
+
+
